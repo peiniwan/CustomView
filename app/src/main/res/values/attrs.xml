@@ -7,4 +7,7 @@
         <attr name="textColor" format="color"/>
         <attr name="textSize" format="dimension"/>
     </declare-styleable>
+    <declare-styleable name="MaterialEditText">
+        <attr name="useFloatingLabel" format="boolean" />
+    </declare-styleable>
 </resources>

@@ -23,7 +23,7 @@ public class MainActivity extends Activity {
 
 
     private String[] mStrs = new String[]{"Scrollview回弹效果", "视差特效", "拖拽view", "圆环进度条",
-            "转盘", "转盘2"};
+            "转盘", "转盘2", "MaterialEditText","自定义drawable", "MaterialEditText","自定义drawable"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +102,12 @@ public class MainActivity extends Activity {
             startActivity(intent);
         } else if (s.equals(mStrs[5])) {
             intent.setClass(MainActivity.this, LuckPanActivity2.class);
+            startActivity(intent);
+        }else if (s.equals(mStrs[6])) {
+            intent.setClass(MainActivity.this, MaterialEditActivity.class);
+            startActivity(intent);
+        }else if (s.equals(mStrs[7])) {
+            intent.setClass(MainActivity.this, CustomDrawableActivity.class);
             startActivity(intent);
         }
 

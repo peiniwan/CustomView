@@ -22,6 +22,8 @@
         <activity android:name=".TestRoundProgressActivity" />
         <activity android:name=".LuckPanActivity" />
         <activity android:name=".LuckPanActivity2" />
+        <activity android:name=".MaterialEditActivity" />
+        <activity android:name=".CustomDrawableActivity" />
 
 
     </application>
