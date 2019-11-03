@@ -24,6 +24,7 @@
         <activity android:name=".LuckPanActivity2" />
         <activity android:name=".MaterialEditActivity" />
         <activity android:name=".CustomDrawableActivity" />
+        <activity android:name=".LikeActivity" />
 
 
     </application>
