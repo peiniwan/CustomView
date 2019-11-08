@@ -16,7 +16,7 @@ public class MainActivity extends Activity {
 
 
     private String[] mStrs = new String[]{"Scrollview回弹效果", "视差特效", "拖拽view", "圆环进度条",
-            "转盘", "转盘2", "MaterialEditText", "自定义drawabl，练习onMeasure","点赞"};
+            "转盘", "转盘2", "MaterialEditText", "自定义drawabl，练习onMeasure","点赞","缩放图片"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +80,9 @@ public class MainActivity extends Activity {
             startActivity(intent);
         }else if (s.equals(mStrs[8])) {
             intent.setClass(MainActivity.this, LikeActivity.class);
+            startActivity(intent);
+        }else if (s.equals(mStrs[9])) {
+            intent.setClass(MainActivity.this, ScalImageActivity.class);
             startActivity(intent);
         }
     }

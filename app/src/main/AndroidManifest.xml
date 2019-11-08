@@ -25,7 +25,7 @@
         <activity android:name=".MaterialEditActivity" />
         <activity android:name=".CustomDrawableActivity" />
         <activity android:name=".LikeActivity" />
-
+        <activity android:name=".ScalImageActivity" />
 
     </application>
 
