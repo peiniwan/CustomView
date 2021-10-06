@@ -16,7 +16,8 @@ public class MainActivity extends Activity {
 
 
     private String[] mStrs = new String[]{"Scrollview回弹效果", "视差特效", "拖拽view", "圆环进度条",
-            "转盘", "转盘2", "MaterialEditText", "自定义drawabl，练习onMeasure","点赞","缩放图片"};
+            "转盘", "转盘2", "MaterialEditText", "自定义drawabl，练习onMeasure","点赞","缩放图片",
+            "拖拽","viewpager","优化GIF","大图","测试"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +85,22 @@ public class MainActivity extends Activity {
         }else if (s.equals(mStrs[9])) {
             intent.setClass(MainActivity.this, ScalImageActivity.class);
             startActivity(intent);
+        }else if (s.equals(mStrs[10])) {
+            intent.setClass(MainActivity.this, DragActivity.class);
+            startActivity(intent);
+        }else if (s.equals(mStrs[11])) {
+            intent.setClass(MainActivity.this, ViewPagerActivity.class);
+            startActivity(intent);
+        }else if (s.equals(mStrs[12])) {
+            intent.setClass(MainActivity.this, GIFActivity.class);
+            startActivity(intent);
+        }else if (s.equals(mStrs[13])) {
+            intent.setClass(MainActivity.this, LargeImageViewActivity.class);
+            startActivity(intent);
+        }else if (s.equals(mStrs[14])) {
+            intent.setClass(MainActivity.this, EspressoTestActivity.class);
+            startActivity(intent);
         }
     }
+
 }

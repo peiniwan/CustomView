@@ -51,6 +51,8 @@ public class ScalableImageView extends View {
 
         bitmap = Utils.getAvatar(getResources(), (int) IMAGE_WIDTH);
         detector = new GestureDetectorCompat(context, henGestureListener);
+        //用于自动计算滑动的偏移
+        //常用于 onFling() 方法中，调⽤用 OverScroller.fling() ⽅法来启动惯性滑动的计算
         scroller = new OverScroller(context);
         scaleDetector = new ScaleGestureDetector(context, henScaleListener);
     }
@@ -93,9 +95,9 @@ public class ScalableImageView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        boolean result = scaleDetector.onTouchEvent(event);
+        boolean result = scaleDetector.onTouchEvent(event);//双击
         if (!scaleDetector.isInProgress()) {
-            result = detector.onTouchEvent(event);
+            result = detector.onTouchEvent(event);//双指缩放
         }
         return result;
     }
@@ -105,8 +107,8 @@ public class ScalableImageView extends View {
         super.onDraw(canvas);
 
         float scaleFraction = (currentScale - smallScale) / (bigScale - smallScale);
-        canvas.translate(offsetX * scaleFraction, offsetY * scaleFraction);
-        canvas.scale(currentScale, currentScale, getWidth() / 2f, getHeight() / 2f);
+        canvas.translate(offsetX * scaleFraction, offsetY * scaleFraction);//移动
+        canvas.scale(currentScale, currentScale, getWidth() / 2f, getHeight() / 2f);//放缩
         canvas.drawBitmap(bitmap, originalOffsetX, originalOffsetY, paint);
     }
 
@@ -119,21 +121,26 @@ public class ScalableImageView extends View {
 
         @Override
         public boolean onDown(MotionEvent e) {
+            // 每次 ACTION_DOWN 事件出现的时候都会被调⽤，必须在这里返回true
             return true;
         }
 
         @Override
         public void onShowPress(MotionEvent e) {
-
+            // ⽤用户按下 100ms 不松⼿后会被调⽤，⽤于标记「可以显示按下状态了」
         }
 
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
+            // ⽤户单击时被调⽤(支持长按时长按后松⼿不会调⽤、双击的第⼆下时不会被调⽤
             return false;
         }
 
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            // 用户滑动时被调⽤
+            // 第一个事件是⽤户按下时的 ACTION_DOWN 事件，第⼆个事件是当前事件
+            // 偏移是按下时的位置 - 当前事件的位置
             if (big) {
                 offsetX -= distanceX;
                 offsetY -= distanceY;
@@ -145,15 +152,19 @@ public class ScalableImageView extends View {
 
         @Override
         public void onLongPress(MotionEvent e) {
-
+            // ⽤户长按（按下 500ms 不松⼿）后会被调⽤
+            // 这个 500ms 在 GestureDetectorCompat 中变成了 600ms(？？？)
         }
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            // ⽤于滑动时迅速抬起时被调⽤，⽤于⽤户希望控件进行惯性滑动的场景
             if (big) {
+                // 初始化滑动
                 scroller.fling((int) offsetX, (int) offsetY, (int) velocityX, (int) velocityY,
                         -(int) maxOffsetX, (int) maxOffsetX, -(int) maxOffsetY, (int) maxOffsetY,
                         (int) Utils.dp2px(50), (int) Utils.dp2px(50));
+                // 下一帧刷新
                 ViewCompat.postOnAnimation(ScalableImageView.this, henAnimationRunner);
             }
             return false;
@@ -161,11 +172,16 @@ public class ScalableImageView extends View {
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
+            // ⽤户单击时被调⽤
+            // 和 onSingltTapUp() 的区别在于，⽤户的一次点击不会立即调用这个方法，
+            // 而是在⼀定时间后（300ms），确认用户没有进行双击，这个⽅法才会被调用
             return false;
         }
 
         @Override
         public boolean onDoubleTap(MotionEvent e) {
+            // ⽤用户双击时被调⽤
+            // 注意：第二次触摸到屏幕时就调用，⽽不是抬起时
             big = !big;
             if (big) {
                 offsetX = (e.getX() - getWidth() / 2f) * (1 - bigScale / smallScale);
@@ -180,6 +196,8 @@ public class ScalableImageView extends View {
 
         @Override
         public boolean onDoubleTapEvent(MotionEvent e) {
+            // ⽤户双击第⼆次按下时、第⼆次按下后移动时、第⼆次按下后抬起时都会被调⽤
+            // 常用于「双击拖拽」的场景
             return false;
         }
     }
@@ -188,10 +206,13 @@ public class ScalableImageView extends View {
         @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
         @Override
         public void run() {
+            // 计算此时的位置，并且如果滑动已经结束，就停⽌
             if (scroller.computeScrollOffset()) {
+                // 把此时的位置应⽤用于界⾯
                 offsetX = scroller.getCurrX();
                 offsetY = scroller.getCurrY();
                 invalidate();
+                // 下⼀帧刷新
                 postOnAnimation(this);
             }
         }
